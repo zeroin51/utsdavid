@@ -2,15 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/response.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-final CollectionReference _Collection = _firestore.collection('Mahasiswa');
+final CollectionReference _Collection = _firestore.collection('Transaksi');
 
 class FirebaseCrud {
 //CRUD method here
-  static Future<Response> addMahasiswa({
-    required String nama,
-    required String jurusan,
-    required String fakultas,
-    required String nilai,
+  static Future<Response> addTransaksi({
+    required String kegiatan,
+    required String deskripsi,
+    required String tanggal,
+    required String nominal,
   }) async {
 
     Response response = Response();
@@ -18,10 +18,10 @@ class FirebaseCrud {
         _Collection.doc();
 
     Map<String, dynamic> data = <String, dynamic>{
-      "nama": nama,
-      "jurusan": jurusan,
-      "fakultas" : fakultas,
-      "nilai" : nilai
+      "kegiatan": kegiatan,
+      "deskripsi": deskripsi,
+      "tanggal" : tanggal,
+      "nominal" : nominal
     };
 
     var result = await documentReferencer
@@ -38,18 +38,18 @@ class FirebaseCrud {
         return response;
   }
 
-  static Stream<QuerySnapshot> readMahasiswa() {
+  static Stream<QuerySnapshot> readTransaksi() {
     CollectionReference notesItemCollection =
         _Collection;
 
     return notesItemCollection.snapshots();
   }
 
-  static Future<Response> updateMahasiswa({
-    required String nama,
-    required String jurusan,
-    required String fakultas,
-    required String nilai,
+  static Future<Response> updateTransaksi({
+    required String kegiatan,
+    required String deskripsi,
+    required String tanggal,
+    required String nominal,
     required String docId,
   }) async {
     Response response = Response();
@@ -57,17 +57,17 @@ class FirebaseCrud {
         _Collection.doc(docId);
 
     Map<String, dynamic> data = <String, dynamic>{
-      "nama": nama,
-      "jurusan": jurusan,
-      "fakultas" : fakultas,
-      "nilai" : nilai
+      "kegiatan": kegiatan,
+      "deskripsi": deskripsi,
+      "tanggal" : tanggal,
+      "nominal" : nominal
     };
 
     await documentReferencer
         .update(data)
         .whenComplete(() {
            response.code = 200;
-          response.message = "Update Mahasiswa Sukses";
+          response.message = "Update Transaksi Sukses";
         })
         .catchError((e) {
             response.code = 500;
@@ -77,7 +77,7 @@ class FirebaseCrud {
         return response;
   }
 
-  static Future<Response> deleteMahasiswa({
+  static Future<Response> deleteTransaksi({
     required String docId,
   }) async {
      Response response = Response();
@@ -88,7 +88,7 @@ class FirebaseCrud {
         .delete()
         .whenComplete((){
           response.code = 200;
-          response.message = "Data Mahasiswa Telah Dihapus";
+          response.message = "Data Transaksi Telah Dihapus";
         })
         .catchError((e) {
            response.code = 500;

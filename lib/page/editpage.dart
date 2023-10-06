@@ -1,12 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:utsdavid/page/listpage.dart';
 import 'package:flutter/material.dart';
 
-import '../models/mahasiswa.dart';
+import '../models/transaksi.dart';
 import '../services/firebase_crud.dart';
 
 class EditPage extends StatefulWidget {
-final Mahasiswa? mahasiswa;
- EditPage({this.mahasiswa});
+final Transaksi? transaksi;
+ EditPage({this.transaksi});
 
   @override
   State<StatefulWidget> createState() {
@@ -16,10 +17,10 @@ final Mahasiswa? mahasiswa;
 }
 
 class _EditPage extends State<EditPage> {
-  final _nama = TextEditingController();
-  final _jurusan = TextEditingController();
-  final _fakultas = TextEditingController();
-  final _nilai = TextEditingController();
+  final _kegiatan = TextEditingController();
+  final _deskripsi = TextEditingController();
+  final _tanggal = TextEditingController();
+  final _nominal = TextEditingController();
   final _docid = TextEditingController();
 
    
@@ -28,11 +29,11 @@ class _EditPage extends State<EditPage> {
 @override
   void initState() {
     // TODO: implement initState
-    _docid.value = TextEditingValue(text: widget.mahasiswa!.uid.toString());
-    _nama.value = TextEditingValue(text: widget.mahasiswa!.nama.toString());
-    _jurusan.value = TextEditingValue(text: widget.mahasiswa!.jurusan.toString());
-    _fakultas.value = TextEditingValue(text: widget.mahasiswa!.fakultas.toString());
-    _nilai.value = TextEditingValue(text: widget.mahasiswa!.nilai.toString());
+    _docid.value = TextEditingValue(text: widget.transaksi!.uid.toString());
+    _kegiatan.value = TextEditingValue(text: widget.transaksi!.kegiatan.toString());
+    _deskripsi.value = TextEditingValue(text: widget.transaksi!.deskripsi.toString());
+    _tanggal.value = TextEditingValue(text: widget.transaksi!.tanggal.toString());
+    _nominal.value = TextEditingValue(text: widget.transaksi!.nominal.toString());
     
   }
 
@@ -46,14 +47,14 @@ class _EditPage extends State<EditPage> {
         autofocus: false,
         decoration: InputDecoration(
             contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-            hintText: "Nama",
+            hintText: "Kegiatan",
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))));
 
          
 
-    final namaField = TextFormField(
-        controller: _nama,
+    final kegiatanField = TextFormField(
+        controller: _kegiatan,
         autofocus: false,
         validator: (value) {
           if (value == null || value.trim().isEmpty) {
@@ -62,11 +63,11 @@ class _EditPage extends State<EditPage> {
         },
         decoration: InputDecoration(
             contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-            hintText: "Nama",
+            hintText: "Kegiatan",
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))));
-    final jurusanField = TextFormField(
-        controller: _jurusan,
+    final deskripsiField = TextFormField(
+        controller: _deskripsi,
         autofocus: false,
         validator: (value) {
           if (value == null || value.trim().isEmpty) {
@@ -75,11 +76,11 @@ class _EditPage extends State<EditPage> {
         },
         decoration: InputDecoration(
             contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-            hintText: "Jurusan",
+            hintText: "Deskripsi",
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))));
-    final fakultasField = TextFormField(
-        controller: _fakultas,
+    final tanggalField = TextFormField(
+        controller: _tanggal,
         autofocus: false,
         validator: (value) {
           if (value == null || value.trim().isEmpty) {
@@ -88,11 +89,11 @@ class _EditPage extends State<EditPage> {
         },
         decoration: InputDecoration(
             contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-            hintText: "Fakultas",
+            hintText: "Tanggal",
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))));
-    final nilaiField = TextFormField(
-        controller: _nilai,
+    final nominalField = TextFormField(
+        controller: _nominal,
         autofocus: false,
         validator: (value) {
           if (value == null || value.trim().isEmpty) {
@@ -101,7 +102,7 @@ class _EditPage extends State<EditPage> {
         },
         decoration: InputDecoration(
             contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-            hintText: "Nilai",
+            hintText: "Nominal",
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))));
 
@@ -115,7 +116,7 @@ class _EditPage extends State<EditPage> {
             (route) => false, //if you want to disable back feature set to false
           );
         },
-        child: const Text('List Mahasiswa'));
+        child: const Text('List Transaksi'));
 
     final SaveButon = Material(
       elevation: 5.0,
@@ -126,11 +127,11 @@ class _EditPage extends State<EditPage> {
         padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
-            var response = await FirebaseCrud.updateMahasiswa(
-                nama: _nama.text,
-                jurusan: _jurusan.text,
-                fakultas: _fakultas.text,
-                nilai: _nilai.text,
+            var response = await FirebaseCrud.updateTransaksi(
+                kegiatan: _kegiatan.text,
+                deskripsi: _deskripsi.text,
+                tanggal: _tanggal.text,
+                nominal: _nominal.text,
                 docId: _docid.text);
             if (response.code != 200) {
               showDialog(
@@ -178,13 +179,13 @@ class _EditPage extends State<EditPage> {
                 children: <Widget>[
                   DocIDField,
                   const SizedBox(height: 25.0),
-                  namaField,
+                  kegiatanField,
                   const SizedBox(height: 25.0),
-                  jurusanField,
+                  deskripsiField,
                   const SizedBox(height: 25.0),
-                  fakultasField,
+                  tanggalField,
                   const SizedBox(height: 25.0),
-                  nilaiField,
+                  nominalField,
                   viewListbutton,
                   const SizedBox(height: 35.0),
                   SaveButon,

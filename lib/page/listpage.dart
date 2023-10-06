@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:utsdavid/models/mahasiswa.dart';
+import 'package:utsdavid/models/transaksi.dart';
 import 'package:utsdavid/page/addpage.dart';
 import 'package:utsdavid/page/editpage.dart';
 import 'package:flutter/material.dart';
@@ -14,14 +14,14 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPage extends State<ListPage> {
-  final Stream<QuerySnapshot> collectionReference = FirebaseCrud.readMahasiswa();
+  final Stream<QuerySnapshot> collectionReference = FirebaseCrud.readTransaksi();
   //FirebaseFirestore.instance.collection('Mahasiswa').snapshots();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("List Mahasiswa"),
+        title: const Text("List Transaksi"),
         backgroundColor: Theme.of(context).primaryColor,
         actions: <Widget>[
           IconButton(
@@ -53,16 +53,16 @@ class _ListPage extends State<ListPage> {
                   return Card(
                       child: Column(children: [
                     ListTile(
-                      title: Text(e["nama"]),
+                      title: Text(e["kegiatan"]),
                       subtitle: Container(
                         child: (Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text("Jurusan: " + e['jurusan'],
+                            Text("Deskripsi: " + e['deskripsi'],
                                 style: const TextStyle(fontSize: 14)),
-                            Text("Fakultas: " + e['fakultas'],
+                            Text("Tanggal: " + e['tanggal'],
                                 style: const TextStyle(fontSize: 12)),
-                            Text("Nilai: " + e['nilai'],
+                            Text("Nominal: " + e['nominal'],
                                 style: const TextStyle(fontSize: 12)),
                           ],
                         )),
@@ -83,12 +83,12 @@ class _ListPage extends State<ListPage> {
                               context,
                               MaterialPageRoute<dynamic>(
                                 builder: (BuildContext context) => EditPage(
-                                  mahasiswa: Mahasiswa(
+                                  transaksi: Transaksi(
                                       uid: e.id,
-                                      nama: e["nama"],
-                                      jurusan: e["jurusan"],
-                                      fakultas: e["fakultas"],
-                                      nilai: e["nilai"]),
+                                      kegiatan: e["kegiatan"],
+                                      deskripsi: e["deskripsi"],
+                                      tanggal: e["tanggal"],
+                                      nominal: e["nominal"]),
                                 ),
                               ),
                               (route) =>
@@ -105,7 +105,7 @@ class _ListPage extends State<ListPage> {
                           child: const Text('Delete'),
                           onPressed: () async {
                             var response =
-                                await FirebaseCrud.deleteMahasiswa(docId: e.id);
+                                await FirebaseCrud.deleteTransaksi(docId: e.id);
                             if (response.code != 200) {
                               showDialog(
                                   context: context,

@@ -2,6 +2,7 @@ import 'package:utsdavid/firebase_options.dart';
 import 'package:utsdavid/page/addpage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:utsdavid/page/homepage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.indigo,
         brightness: Brightness.dark,
       ),
-      home: AddPage(),
+      home: HomePage(),
     );
   }
 }
